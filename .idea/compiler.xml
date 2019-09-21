@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="vip" />
         <module name="product" />
-        <module name="admin" />
         <module name="comment" />
+        <module name="admin" />
       </profile>
     </annotationProcessing>
   </component>
