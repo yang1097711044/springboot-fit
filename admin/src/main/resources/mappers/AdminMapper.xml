@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ys.admin.mapper.AdminMapper">
+  <resultMap id="AdminResultMap" type="com.ys.admin.entity.Admin">
+    <!--@mbg.generated-->
+    <id column="a_id" jdbcType="INTEGER" property="aId" />
+    <result column="a_name" jdbcType="VARCHAR" property="aName" />
+    <result column="a_sex" jdbcType="VARCHAR" property="aSex" />
+    <result column="a_phone" jdbcType="VARCHAR" property="aPhone" />
+    <result column="a_email" jdbcType="VARCHAR" property="aEmail" />
+    <result column="a_adresss" jdbcType="VARCHAR" property="aAdresss" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="a_password" jdbcType="VARCHAR" property="aPassword" />
+  </resultMap>
+  <select id="showAll" resultMap="AdminResultMap">
+    select a.a_name,a.a_sex,a.a_phone,a.a_email,a.a_adresss from admin a where a_delete=0 and a_locked=0
+  </select>
+  <update id="deleteAdmin">
+    update  admin set a_delete=1 where a_id=#{aId}
+  </update>
+  <select id="findByName" resultMap="AdminResultMap">
+    select a_name from admin where a_name=#{aName}
+  </select>
+  <insert id="insertAdmin">
+    insert  into admin(a_name,a_sex,a_phone,a_email,a_adresss)
+    values (#{aName},#{aSex},#{aPhone},#{aEmail},#{aAdresss})
+  </insert>
+  <update id="updateAdmin">
+    update admin set a_sex=#{aSex},a_phone=#{aPhone},a_email=#{aEmail},a_adresss=#{aAdresss}
+    where a_id=#{aId}
+  </update>
+  <update id="updataMM">
+    update admin set a_password=#{mm} where a_id=#{aId}
+  </update>
+  <update id="updateStatus">
+    update  admin set a_status=1 where a_id=#{aId}
+  </update>
+  <update id="updataLocked">
+    update  admin set a_locked=1 where a_id=#{aId}
+  </update>
+  <update id="deleteBatch">
+    update admin set a_delete=1 WHERE a_id in
+    <foreach collection="Ids" item="admin" separator="," open="(" close=")">
+      #{Ids}
+    </foreach>
+  </update>
+  <select id="loginAdmin" resultMap="AdminResultMap">
+    select a_name,a_password from admin where a_name=#{aName} and a_password=#{aPassword}
+    and a_delete=0 and a_status and a_locked=0
+  </select>
+</mapper>

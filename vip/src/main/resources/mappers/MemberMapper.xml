@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ys.vip.mapper.MemberMapper">
+  <resultMap id="MemberResultMapper" type="com.ys.vip.entity.Member">
+    <!--@mbg.generated-->
+    <id column="m_id" jdbcType="INTEGER" property="mId" />
+    <result column="m_name" jdbcType="VARCHAR" property="mName" />
+    <result column="m_sex" jdbcType="VARCHAR" property="mSex" />
+    <result column="m_phone" jdbcType="VARCHAR" property="mPhone" />
+    <result column="m_email" jdbcType="VARCHAR" property="mEmail" />
+    <result column="m_adresss" jdbcType="VARCHAR" property="mAdresss" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+    <select id="showAll" resultMap="MemberResultMapper">
+      select m.m_id, m.m_name, m.m_sex, m.m_phone, m.m_email, m.m_adresss
+      , m.create_time, m.m_status from member m where m_delete=0 and m_locked=0
+    </select>
+    <update id="deleteMember">
+      update  member set m_delete=1 where m_id=#{id}
+    </update>
+  <select id="findByName" resultMap="MemberResultMapper">
+    select m_name from member where m_name=#{mName}
+  </select>
+    <insert id="insertMember">
+      insert  into member(m_name,m_sex,m_phone,m_email,m_adresss)
+      values (#{mName},#{mSex},#{mPhone},#{mEmail},#{mAdresss})
+    </insert>
+   <update id="updateMember">
+     update member set m_sex=#{mSex},m_phone=#{mPhone},m_email=#{mEmail},m_adresss=#{mAdresss} where m_id=#{id}
+   </update>
+  <update id="updateStatus">
+    update  member set m_status=1 where m_id=#{id}
+  </update>
+  <update id="updataLocked">
+    update  member set m_locked=1 where m_id=#{id}
+  </update>
+  <update id="deleteBatch">
+    update member set m_delete=1 WHERE m_id in
+    <foreach collection="ids" item="member" separator="," open="(" close=")">
+      #{ids}
+    </foreach>
+
+  </update>
+</mapper>
